@@ -1,10 +1,10 @@
 :root {
-    --bg: #050505;
-    --term-bg: #0a0a0a;
-    --text: #ffb000; /* Amber */
-    --text-dim: #996a00;
-    --accent: #ffcc00;
-    --scanline: rgba(255, 176, 0, 0.05);
+    --bg: #04110f;
+    --term-bg: #07201c;
+    --text: #7ef9d3; /* Mint */
+    --text-dim: #2ea88f;
+    --accent: #b8ffe9;
+    --scanline: rgba(126, 249, 211, 0.05);
     --font: 'Courier New', monospace;
 }
 
