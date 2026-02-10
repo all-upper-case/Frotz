@@ -1,0 +1,171 @@
+{
+  "narrative_thread": "Player examined their clothes; no changes to world state.",
+  "player": {
+    "current_room": "room_41056aac",
+    "inventory": [
+      "phone"
+    ]
+  },
+  "rooms": {
+    "room_start": {
+      "id": "room_start",
+      "name": "Your Bedroom",
+      "description": "The bedroom is a shrine to procrastination and half-finished projects. The queen-sized bed, unmade since... well, you can\u2019t remember, dominates the space. A nightstand clutters the left side, its surface a graveyard of empty water glasses, a dog-eared paperback, and a lamp that\u2019s seen better days. Across the room, a dresser stands guard over a pile of laundry\u2014clean, but definitely not folded. The closet door hangs slightly ajar, revealing a dark abyss of questionable fashion choices. A faint hum of traffic drifts in from the open window, mingling with the distant bark of a neighbor\u2019s dog. The carpet beneath your feet is plush but worn, a testament to years of pacing during late-night phone calls and existential crises. To the east, a door leads to the hallway, while a window to the north offers a view of the backyard\u2014currently just a sea of dew-covered grass and a trampoline that hasn\u2019t been used since 2003.",
+      "exits": {
+        "east": "room_2886c631"
+      },
+      "items": [
+        "unmade_bed",
+        "nightstand",
+        "laundry_pile",
+        "closet_door",
+        "alarm_clock",
+        "window",
+        "pajamas"
+      ],
+      "visited": true
+    },
+    "room_2886c631": {
+      "id": "room_2886c631",
+      "name": "The Hallway",
+      "description": "The hallway stretches before you like a time capsule of your own mediocrity. The walls, painted a forgettable shade of beige, are lined with framed photos\u2014most of them blurry, some of them featuring exes you\u2019d rather not remember, and one particularly unflattering shot of you at last year\u2019s office holiday party, mid-sneeze. The carpet here is thinner than in your bedroom, worn down by years of bare feet padding to the bathroom at 3 AM. A faint scent of lavender air freshener lingers, though it\u2019s fighting a losing battle against the underlying odor of old takeout and something vaguely musty. To the south, a door stands slightly ajar, revealing a sliver of the bathroom\u2014where the real chaos begins. To the west, the hallway opens into what you *think* is the living room, though it\u2019s hard to tell from here. A narrow console table hugs the wall beneath a flickering fluorescent light, its surface cluttered with unopened mail, a half-dead potted plant, and a landline phone that hasn\u2019t rung in months.",
+      "exits": {
+        "west": "room_start",
+        "south": "room_41056aac"
+      },
+      "items": [
+        "unopened_mail_pile",
+        "dying_potted_plant",
+        "landline_phone"
+      ],
+      "visited": false
+    },
+    "room_41056aac": {
+      "id": "room_41056aac",
+      "name": "The Bathroom",
+      "description": "The bathroom greets you with the kind of humidity that clings to your skin like a bad decision. The mirror above the sink is fogged at the edges, its silver backing peeling in one corner\u2014a relic from the '90s, like most of the decor in this house. The light is harsh, unflattering, the kind that exposes every pore and dark circle you\u2019ve earned from another night of scrolling through late-night infomercials. The shower curtain, a faded floral print, sways slightly, as if someone\u2014or something\u2014just brushed past it. The air smells of damp towels, expired vanilla body wash, and the faintest hint of mildew creeping in from the grout. The sink is a graveyard of half-empty toiletries: a bottle of foundation with a cracked cap, a tube of toothpaste squeezed from the middle, and a razor that\u2019s seen better days. To the north, the hallway beckons, slightly less oppressive than this fluorescent hellscape. The door to the east is closed\u2014probably for the best, given what\u2019s lurking behind it.",
+      "exits": {
+        "north": "room_2886c631"
+      },
+      "items": [
+        "foggy_mirror",
+        "damp_towel",
+        "expired_body_wash",
+        "old_razor"
+      ],
+      "visited": false
+    }
+  },
+  "items": {
+    "unmade_bed": {
+      "id": "unmade_bed",
+      "name": "unmade bed",
+      "description": "A queen-sized disaster zone of tangled sheets, a lumpy pillow, and a comforter that\u2019s seen better days. The mattress sags slightly in the middle, a silent testament to years of restless sleep. A single sock clings to the edge, as if it\u2019s too exhausted to fall to the floor. You could make it, but why bother? It\u2019ll just get unmade again tonight.",
+      "carryable": false
+    },
+    "nightstand": {
+      "id": "nightstand",
+      "name": "nightstand",
+      "description": "A wooden nightstand, its surface scarred by rings from forgotten drinks and the occasional hot coffee mug. The top drawer is slightly open, revealing a tangle of charging cables, a half-empty bottle of hand lotion, and a single, sad AA battery. On top, a stack of unread magazines teeters precariously next to a lamp with a shade that\u2019s slightly askew. A framed photo of you and your college friends\u2014circa 2001\u2014gathers dust next to a glass of water that\u2019s been there so long it\u2019s probably a science experiment now.",
+      "carryable": false
+    },
+    "laundry_pile": {
+      "id": "laundry_pile",
+      "name": "pile of laundry",
+      "description": "A mountain of clean-but-unfolded clothes, rising like a textile Everest from the floor. Most of it is work-appropriate, but there\u2019s a suspicious amount of yoga pants and oversized sweatshirts mixed in. A lone sock peeks out from the top, daring you to find its mate. The pile smells faintly of fabric softener and regret.",
+      "carryable": false
+    },
+    "closet_door": {
+      "id": "closet_door",
+      "name": "closet door",
+      "description": "A bi-fold closet door, slightly ajar, revealing a dark and mysterious interior. The door itself is a relic of the 90s, with a faux wood finish that\u2019s seen better days. A single shoelace dangles from the handle, as if someone\u2014or something\u2014tried to escape but gave up halfway. The closet beckons, but you\u2019re not sure you\u2019re ready to face what\u2019s inside.",
+      "carryable": false
+    },
+    "alarm_clock": {
+      "id": "alarm_clock",
+      "name": "alarm clock",
+      "description": "A digital alarm clock, its red numbers glowing 6:18 AM with the urgency of a countdown to doom. The plastic casing is yellowed with age, and the snooze button is worn smooth from overuse. The alarm is currently silenced, but the memory of its shrill cry still echoes in your skull. A thin layer of dust coats the top, interrupted only by a single fingerprint\u2014yours, from when you smacked it into submission a few minutes ago.",
+      "carryable": true
+    },
+    "window": {
+      "id": "window",
+      "name": "window",
+      "description": "A large window, its blinds half-open, offering a view of the backyard. The glass is slightly fogged from the morning chill, and a thin layer of pollen dusts the sill. Outside, the world is still waking up: birds chirp lazily, a squirrel darts across the lawn, and the neighbor\u2019s dog barks at nothing in particular. The window is locked, but the latch looks like it hasn\u2019t been tested in years.",
+      "carryable": false
+    },
+    "pajamas": {
+      "id": "pajamas",
+      "name": "pajamas",
+      "description": "A set of well-worn flannel pajamas, their once-vibrant plaid pattern now faded to a muted blur. The pants are slightly too long, pooling around your ankles, and the shirt has a small coffee stain near the hem\u2014courtesy of last night\u2019s late-night snack. They\u2019re comfortable, but not exactly office-appropriate. The fabric smells faintly of lavender detergent and the faintest hint of desperation.",
+      "carryable": false
+    },
+    "phone": {
+      "id": "phone",
+      "name": "cell phone",
+      "description": "A flip phone, its silver exterior scratched from years of being tossed into purses and dropped onto nightstands. The screen displays a single notification: \"1 New Voicemail.\" The battery icon is at 42%, which is either a blessing or a curse\u2014you haven\u2019t decided yet. The phone is silent, but you can feel its judgmental gaze, as if it\u2019s disappointed you haven\u2019t upgraded to a smartphone yet.",
+      "carryable": true
+    },
+    "unopened_mail_pile": {
+      "id": "unopened_mail_pile",
+      "name": "pile of unopened mail",
+      "description": "A leaning tower of envelopes, catalogs, and what might be a jury duty summons buried somewhere near the bottom. The topmost envelope is stamped with the words 'FINAL NOTICE' in bold red letters, but you\u2019ve been ignoring that one for at least a week. The paper feels thin and insubstantial, like it might dissolve if you breathe on it too hard.",
+      "carryable": true
+    },
+    "dying_potted_plant": {
+      "id": "dying_potted_plant",
+      "name": "half-dead potted plant",
+      "description": "A sad, skeletal thing that was probably a fern at some point. Now, it\u2019s mostly brown twigs and a single, defiant green leaf clinging to life. The soil is cracked and dry, and the pot itself is chipped on one side. You don\u2019t remember buying it, but it\u2019s been here long enough to feel like an indictment of your ability to keep anything alive.",
+      "carryable": true
+    },
+    "landline_phone": {
+      "id": "landline_phone",
+      "name": "landline phone",
+      "description": "A relic of the 20th century, this corded phone is the color of dishwater and just as appealing. The receiver is slightly sticky, and the cord is tangled into a knot that would make a sailor weep. The voicemail light blinks red, but you\u2019ve long since given up on checking it. Who even calls landlines anymore?",
+      "carryable": false
+    },
+    "foggy_mirror": {
+      "id": "foggy_mirror",
+      "name": "foggy mirror",
+      "aliases": [
+        "mirror",
+        "bathroom mirror",
+        "looking glass"
+      ],
+      "description": "The mirror is a cruel mistress. It\u2019s fogged enough to obscure the worst of your reflection, but not enough to hide the fact that you look like you\u2019ve been dragged backward through a hedge. The silver backing is peeling in one corner, revealing the cheap particleboard beneath. A smudge of last night\u2019s mascara lingers near the bottom, like a dark omen. You could probably wipe it clean, but do you really want to see what\u2019s underneath?",
+      "carryable": false
+    },
+    "damp_towel": {
+      "id": "damp_towel",
+      "name": "damp towel",
+      "aliases": [
+        "towel",
+        "bath towel",
+        "wet towel"
+      ],
+      "description": "This towel is damp in that specific way that suggests it\u2019s been hanging here for days, slowly fermenting. It\u2019s a faded shade of blue, the edges frayed from too many washes. It smells like a mix of fabric softener and regret. You could use it to dry off, but the thought of pressing it to your face makes your skin crawl.",
+      "carryable": true
+    },
+    "expired_body_wash": {
+      "id": "expired_body_wash",
+      "name": "expired body wash",
+      "aliases": [
+        "body wash",
+        "vanilla body wash",
+        "soap"
+      ],
+      "description": "The label on this bottle of body wash is peeling, the expiration date long since faded into obscurity. The liquid inside is a murky, off-white color, and the vanilla scent has soured into something vaguely chemical. It\u2019s the kind of thing you\u2019d throw out if you weren\u2019t too lazy to replace it. The cap is cracked, and a thin film of dried soap crusts the opening.",
+      "carryable": true
+    },
+    "old_razor": {
+      "id": "old_razor",
+      "name": "old razor",
+      "aliases": [
+        "razor",
+        "disposable razor",
+        "shaving razor"
+      ],
+      "description": "This razor has seen better days. The plastic handle is yellowed with age, and the blades are dull enough to make shaving feel like a form of self-flagellation. A few rust spots dot the metal, and the grip is slick with old soap scum. You\u2019re pretty sure you\u2019ve been using this same razor since college. It\u2019s a miracle you haven\u2019t given yourself a staph infection yet.",
+      "carryable": true
+    }
+  }
+}

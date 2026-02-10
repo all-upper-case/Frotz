@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MISTRAL Z-MACHINE</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Markdown Support -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <div class="crt-lines"></div>
+    
+    <div class="main-layout">
+        <div class="mobile-header">
+            <span class="brand">Z-MACHINE</span>
+            <button id="hud-toggle">DATA PAD</button>
+        </div>
+
+        <div class="terminal" id="terminal">
+            <div id="log"></div>
+        </div>
+
+        <div class="input-area">
+            <span class="prompt-char">></span>
+            <input type="text" id="cmd-input" autocomplete="off" placeholder="Enter command...">
+            <button id="send-btn">SEND</button>
+        </div>
+    </div>
+
+    <div class="hud" id="hud">
+        <div class="hud-content">
+            <div class="panel">
+                <h3>LOCATION</h3>
+                <div id="stat-loc">Unknown</div>
+            </div>
+            <div class="panel">
+                <h3>EXITS</h3>
+                <div id="stat-exits">--</div>
+            </div>
+            <div class="panel">
+                <h3>INVENTORY</h3>
+                <ul id="stat-inv"></ul>
+            </div>
+            
+            <div style="margin-top:auto;">
+                <button id="reset-btn" onclick="resetWorld()" style="width:100%; padding:10px; background:#330000; color:red; border:1px solid red; font-family:inherit; cursor:pointer;">HARD RESET WORLD</button>
+                <button id="hud-close" style="width:100%; margin-top:10px;">CLOSE PAD</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+GENRE: Slice of Life.
+SETTING: A suburban house in Somewhere, USA. The year is 2005.
+PLAYER CHARACTER: A professional young woman, moderately attractive.
+PLAYER GOAL: Get ready for work and make it out the door.
+TONE: Dry humor, casual, classic modern Interactive Fiction style, sarcastic at times.
