@@ -1,0 +1,11 @@
+# Python caches
+__pycache__/
+*.py[cod]
+
+# Runtime/generated game data
+savegame.json
+debug_log.txt
+backups/
+
+# Local envs
+.venv/
