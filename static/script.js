@@ -52,19 +52,29 @@ async function sendCommand() {
     appendLog(`> ${text}`, 'user');
     input.value = '';
 
+    let data;
+
     try {
         const res = await fetch('/command', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({input: text})
         });
-        const data = await res.json();
-        appendLog(data.response, 'ai');
-        appendUsage(data.usage);
-        if (data.state) updateHUD(data.state);
+
+        if (!res.ok) {
+            throw new Error(`HTTP ${res.status}`);
+        }
+
+        data = await res.json();
     } catch (e) {
-        appendLog("Error contacting server.", 'error');
+        console.error(e);
+        appendLog("Request failed.", 'error');
+        return;
     }
+
+    appendLog(data.response, 'ai');
+    appendUsage(data.usage);
+    if (data.state) updateHUD(data.state);
 }
 
 function appendLog(html, type) {
@@ -73,6 +83,10 @@ function appendLog(html, type) {
     div.innerHTML = marked.parse(html || "");
     log.appendChild(div);
     document.getElementById('terminal').scrollTop = 99999;
+}
+
+function appendUsage(usage) {
+    if (!usage) return;
 }
 
 function updateHUD(state) {
