@@ -28,6 +28,7 @@ async function triggerReset() {
 
     log.innerHTML = ''; // Clear loading text
     appendLog(data.response, 'system'); // Show Intro + Room 1
+    appendUsage(data.usage);
     if (data.state) updateHUD(data.state);
 }
 
@@ -59,6 +60,7 @@ async function sendCommand() {
         });
         const data = await res.json();
         appendLog(data.response, 'ai');
+        appendUsage(data.usage);
         if (data.state) updateHUD(data.state);
     } catch (e) {
         appendLog("Error contacting server.", 'error');
@@ -85,3 +87,11 @@ function updateHUD(state) {
     });
 }
 if (typeof marked === 'undefined') window.marked = { parse: (t) => t };
+
+function appendUsage(usage) {
+    if (!usage) return;
+    const input = usage.input_tokens ?? '?';
+    const output = usage.output_tokens ?? '?';
+    const total = usage.total_tokens ?? '?';
+    appendLog(`TOKENS — input: ${input}, output: ${output}, total: ${total}`, 'system');
+}
