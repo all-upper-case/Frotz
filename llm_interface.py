@@ -95,6 +95,8 @@ YOUR CONTEXT:
 - Narrative Thread: {narrative_thread}
 - Current Room State: {room_json}
 - Player Inventory: {inventory}
+- Player Worn Items: {worn}
+- Player State: {player_state}
 
 YOUR INSTRUCTIONS:
 1. PARSING: Interpret intent (n, s, e, w, x, i, l, or complex actions like 'search the desk').
@@ -105,8 +107,16 @@ YOUR INSTRUCTIONS:
 3. STATE UPDATES:
    - If the player takes an item: Put its ID in 'inventory_add' and 'room_remove'.
    - If they drop it: Put it in 'inventory_remove' and 'room_add'.
+   - If they wear something: move it with 'wear_add'. If they remove clothing: move it with 'wear_remove'.
    - If an item's state changes (e.g., 'sharpen sword'): Update its 'update_description'.
-4. NARRATIVE THREAD:
+   - If the room's static prose should change, set 'current_room_base_description'.
+   - If the player's examine-me prose should change, set 'player_description_update'.
+   - If something is hidden/revealed, set 'item_visibility_update' with item IDs and boolean values.
+4. ROBUSTNESS:
+   - Keep room prose stable; list-like presence should be handled by engine composition, not hardcoded into prose.
+   - Hidden items should remain invisible until revealed (searching, moving coverings, opening containers, etc.).
+   - Clothing layers should affect examine-me output through world-state updates.
+5. NARRATIVE THREAD:
    - Use 'narrative_summary_update' to summarize major developments for the Architect's future use.
 
 OUTPUT VALID JSON ONLY:
@@ -116,7 +126,12 @@ OUTPUT VALID JSON ONLY:
   "inventory_remove": [],
   "room_add": [],
   "room_remove": [],
+  "wear_add": [],
+  "wear_remove": [],
   "update_description": {{ "item_id": "New description string" }},
+  "current_room_base_description": "Optional revised base room prose",
+  "player_description_update": "Optional revised examine-me prose",
+  "item_visibility_update": {{ "item_id": true }},
   "narrative_summary_update": "Brief update on plot/world state."
 }}
 """
@@ -167,7 +182,14 @@ class LLMInterface:
         sys = PROMPT_ARCHITECT.format(lore_bible=lore, narrative_thread=thread, prev_name=p_name, prev_desc=p_desc, direction=direction)
         return self._req(sys, "The player has moved. Describe the new area.", "ARCHITECT")
 
-    def process_turn(self, user_input, room_data, inventory, thread):
+    def process_turn(self, user_input, room_data, inventory, worn, player_state, thread):
         lore = self.get_lore()
-        sys = PROMPT_DM.format(lore_bible=lore, narrative_thread=thread, room_json=json.dumps(room_data), inventory=json.dumps(inventory))
+        sys = PROMPT_DM.format(
+            lore_bible=lore,
+            narrative_thread=thread,
+            room_json=json.dumps(room_data),
+            inventory=json.dumps(inventory),
+            worn=json.dumps(worn),
+            player_state=json.dumps(player_state)
+        )
         return self._req(sys, f"PLAYER ACTION: {user_input}", "DM")
