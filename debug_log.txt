@@ -1190,3 +1190,33 @@ OUTPUT VALID JSON ONLY:
   }
 }
 
+--- 2026-02-10 22:38:35 [DM] ---
+[SYSTEM]: [DM SYSTEM PROMPT]
+[USER]: PLAYER ACTION: x photos [LORE BIBLE CONTENTS] [NARRATIVE THREAD] [CURRENT ROOM STATE] [INVENTORY] [WORN ITEMS] [PLAYER STATE]
+[USAGE]: input=1477 output=271 total=1748 raw={"prompt_tokens": 1477, "total_tokens": 1748, "completion_tokens": 271, "num_cached_tokens": 1504}
+[OUTPUT]: {
+  "narrative": "You turn your attention to the framed photos lining the hallway walls. The first one is a blurry shot of you and your college roommate at a party, both of you mid-laugh, your faces slightly out of focus. The next frame holds a picture of your ex, Greg, grinning like he didn\u2019t ghost you after three months of dating. You wince\u2014why is this still here? Further down, there\u2019s the infamous office holiday party photo: your face contorted in a sneeze, your coworker Dave photobombing in the background with a thumbs-up. The rest are a mix of forgettable moments and people you vaguely recognize but can\u2019t quite place. None of them spark joy, but none of them are bad enough to warrant taking down, either. It\u2019s the visual equivalent of a shrug.",
+  "inventory_add": [],
+  "inventory_remove": [],
+  "room_add": [],
+  "room_remove": [],
+  "wear_add": [],
+  "wear_remove": [],
+  "update_description": {},
+  "current_room_base_description": null,
+  "player_description_update": null,
+  "item_visibility_update": {},
+  "narrative_summary_update": "Player examined the hallway photos, reinforcing the theme of mediocrity and unresolved nostalgia.",
+  "_usage": {
+    "input_tokens": 1477,
+    "output_tokens": 271,
+    "total_tokens": 1748,
+    "raw_usage": {
+      "prompt_tokens": 1477,
+      "total_tokens": 1748,
+      "completion_tokens": 271,
+      "num_cached_tokens": 1504
+    }
+  }
+}
+
