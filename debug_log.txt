@@ -1160,3 +1160,33 @@ OUTPUT VALID JSON ONLY:
   "narrative_summary_update": "The player has closed the east door, sealing off the basement staircase and its eerie ambiance. The bathroom now feels slightly more mundane, though the lingering oddities (like the swaying shower curtain) persist."
 }
 
+--- 2026-02-10 20:22:24 [DM] ---
+[SYSTEM]: [DM SYSTEM PROMPT]
+[USER]: PLAYER ACTION: jump [LORE BIBLE CONTENTS] [NARRATIVE THREAD] [CURRENT ROOM STATE] [INVENTORY] [WORN ITEMS] [PLAYER STATE]
+[USAGE]: input=1670 output=251 total=1921 raw={"prompt_tokens": 1670, "total_tokens": 1921, "completion_tokens": 251, "num_cached_tokens": 1697}
+[OUTPUT]: {
+  "narrative": "You hop in place, knees bending slightly as you launch yourself a few inches off the ground. The hallway carpet, already thin and worn, does little to cushion your landing. The framed photos on the wall rattle ominously, and for a brief, horrifying moment, you swear the mid-sneeze holiday party photo tilts at a more unflattering angle. The landline phone on the console table lets out a muffled *thunk* as it shifts slightly. You land with a soft *whump*, and the hallway returns to its usual state of quiet mediocrity. Nothing has changed, except now your calves feel vaguely tighter, and you\u2019re pretty sure you just gave the potted plant a minor existential crisis.",
+  "inventory_add": [],
+  "inventory_remove": [],
+  "room_add": [],
+  "room_remove": [],
+  "wear_add": [],
+  "wear_remove": [],
+  "update_description": {},
+  "current_room_base_description": null,
+  "player_description_update": null,
+  "item_visibility_update": {},
+  "narrative_summary_update": "Player attempted a vertical leap in the hallway. The world remains unimpressed.",
+  "_usage": {
+    "input_tokens": 1670,
+    "output_tokens": 251,
+    "total_tokens": 1921,
+    "raw_usage": {
+      "prompt_tokens": 1670,
+      "total_tokens": 1921,
+      "completion_tokens": 251,
+      "num_cached_tokens": 1697
+    }
+  }
+}
+
