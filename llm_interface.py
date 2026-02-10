@@ -1,7 +1,8 @@
-import os
-import json
-import requests
 import datetime
+import json
+import os
+
+import requests
 
 MISTRAL_API_KEY = os.environ.get("MISTRAL_API_KEY")
 API_URL = "https://api.mistral.ai/v1/chat/completions"
@@ -95,6 +96,8 @@ YOUR CONTEXT:
 - Narrative Thread: {narrative_thread}
 - Current Room State: {room_json}
 - Player Inventory: {inventory}
+- Player Worn Items: {worn}
+- Player State: {player_state}
 
 YOUR INSTRUCTIONS:
 1. PARSING: Interpret intent (n, s, e, w, x, i, l, or complex actions like 'search the desk').
@@ -105,8 +108,16 @@ YOUR INSTRUCTIONS:
 3. STATE UPDATES:
    - If the player takes an item: Put its ID in 'inventory_add' and 'room_remove'.
    - If they drop it: Put it in 'inventory_remove' and 'room_add'.
+   - If they wear something: move it with 'wear_add'. If they remove clothing: move it with 'wear_remove'.
    - If an item's state changes (e.g., 'sharpen sword'): Update its 'update_description'.
-4. NARRATIVE THREAD:
+   - If the room's static prose should change, set 'current_room_base_description'.
+   - If the player's examine-me prose should change, set 'player_description_update'.
+   - If something is hidden/revealed, set 'item_visibility_update' with item IDs and boolean values.
+4. ROBUSTNESS:
+   - Keep room prose stable; list-like presence should be handled by engine composition, not hardcoded into prose.
+   - Hidden items should remain invisible until revealed (searching, moving coverings, opening containers, etc.).
+   - Clothing layers should affect examine-me output through world-state updates.
+5. NARRATIVE THREAD:
    - Use 'narrative_summary_update' to summarize major developments for the Architect's future use.
 
 OUTPUT VALID JSON ONLY:
@@ -116,10 +127,16 @@ OUTPUT VALID JSON ONLY:
   "inventory_remove": [],
   "room_add": [],
   "room_remove": [],
+  "wear_add": [],
+  "wear_remove": [],
   "update_description": {{ "item_id": "New description string" }},
+  "current_room_base_description": "Optional revised base room prose",
+  "player_description_update": "Optional revised examine-me prose",
+  "item_visibility_update": {{ "item_id": true }},
   "narrative_summary_update": "Brief update on plot/world state."
 }}
 """
+
 
 class LLMInterface:
     def __init__(self):
@@ -127,17 +144,38 @@ class LLMInterface:
 
     def get_lore(self):
         if os.path.exists(LORE_FILE):
-            with open(LORE_FILE, 'r', encoding='utf-8') as f: return f.read()
+            with open(LORE_FILE, 'r', encoding='utf-8') as f:
+                return f.read()
         return "A mysterious text adventure."
 
-    def _req(self, system, user, role):
+    def _extract_usage(self, response_json):
+        usage = response_json.get('usage', {}) if isinstance(response_json, dict) else {}
+        return {
+            "input_tokens": usage.get('prompt_tokens'),
+            "output_tokens": usage.get('completion_tokens'),
+            "total_tokens": usage.get('total_tokens'),
+            "raw_usage": usage
+        }
+
+    def _write_debug_log(self, role, system_tag, user_tag, output_data, usage_info):
+        with open(DEBUG_LOG_FILE, "a", encoding='utf-8') as f:
+            ts = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            f.write(
+                f"--- {ts} [{role}] ---\n"
+                f"[SYSTEM]: {system_tag}\n"
+                f"[USER]: {user_tag}\n"
+                f"[USAGE]: input={usage_info.get('input_tokens')} output={usage_info.get('output_tokens')} total={usage_info.get('total_tokens')} raw={json.dumps(usage_info.get('raw_usage', {}))}\n"
+                f"[OUTPUT]: {json.dumps(output_data, indent=2)}\n\n"
+            )
+
+    def _req(self, system, user, role, system_tag, user_tag):
         if not MISTRAL_API_KEY:
             return {"error": "API Key Missing", "narrative": "Set your MISTRAL_API_KEY in Replit Secrets."}
 
         headers = {"Authorization": f"Bearer {MISTRAL_API_KEY}", "Content-Type": "application/json"}
         payload = {
             "model": self.model,
-            "messages": [{"role":"system", "content":system}, {"role":"user", "content":user}],
+            "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}],
             "response_format": {"type": "json_object"},
             "temperature": 0.7
         }
@@ -145,29 +183,62 @@ class LLMInterface:
         try:
             resp = requests.post(API_URL, headers=headers, json=payload)
             resp.raise_for_status()
-            data = json.loads(resp.json()['choices'][0]['message']['content'])
-
-            # Log the full exchange
-            with open(DEBUG_LOG_FILE, "a", encoding='utf-8') as f:
-                ts = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                f.write(f"--- {ts} [{role}] ---\n[SYSTEM]: {system}\n[USER]: {user}\n[OUTPUT]: {json.dumps(data, indent=2)}\n\n")
-
+            response_json = resp.json()
+            data = json.loads(response_json['choices'][0]['message']['content'])
+            usage_info = self._extract_usage(response_json)
+            data["_usage"] = usage_info
+            self._write_debug_log(role, system_tag, user_tag, data, usage_info)
             return data
         except Exception as e:
             return {"narrative": f"The logic of the world ripples... (Error: {e})", "error": True}
 
     def generate_genesis(self):
         lore = self.get_lore()
-        return self._req(PROMPT_GENESIS.format(lore_bible=lore), "Initiate World Genesis.", "GENESIS")
+        sys = PROMPT_GENESIS.format(lore_bible=lore)
+        user = "Initiate World Genesis."
+        return self._req(
+            sys,
+            user,
+            "GENESIS",
+            "[GENESIS SYSTEM PROMPT]",
+            "Initiate World Genesis. [LORE BIBLE CONTENTS]"
+        )
 
     def generate_room(self, prev_room, direction, thread):
         lore = self.get_lore()
         p_name = prev_room['name'] if prev_room else "The Void"
         p_desc = prev_room['description'] if prev_room else "Nothingness."
-        sys = PROMPT_ARCHITECT.format(lore_bible=lore, narrative_thread=thread, prev_name=p_name, prev_desc=p_desc, direction=direction)
-        return self._req(sys, "The player has moved. Describe the new area.", "ARCHITECT")
+        sys = PROMPT_ARCHITECT.format(
+            lore_bible=lore,
+            narrative_thread=thread,
+            prev_name=p_name,
+            prev_desc=p_desc,
+            direction=direction
+        )
+        user = "The player has moved. Describe the new area."
+        return self._req(
+            sys,
+            user,
+            "ARCHITECT",
+            "[ARCHITECT SYSTEM PROMPT]",
+            "The player has moved. Describe the new area. [LORE BIBLE CONTENTS] [NARRATIVE THREAD] [PREVIOUS LOCATION]"
+        )
 
-    def process_turn(self, user_input, room_data, inventory, thread):
+    def process_turn(self, user_input, room_data, inventory, worn, player_state, thread):
         lore = self.get_lore()
-        sys = PROMPT_DM.format(lore_bible=lore, narrative_thread=thread, room_json=json.dumps(room_data), inventory=json.dumps(inventory))
-        return self._req(sys, f"PLAYER ACTION: {user_input}", "DM")
+        sys = PROMPT_DM.format(
+            lore_bible=lore,
+            narrative_thread=thread,
+            room_json=json.dumps(room_data),
+            inventory=json.dumps(inventory),
+            worn=json.dumps(worn),
+            player_state=json.dumps(player_state)
+        )
+        user = f"PLAYER ACTION: {user_input}"
+        return self._req(
+            sys,
+            user,
+            "DM",
+            "[DM SYSTEM PROMPT]",
+            f"PLAYER ACTION: {user_input} [LORE BIBLE CONTENTS] [NARRATIVE THREAD] [CURRENT ROOM STATE] [INVENTORY] [WORN ITEMS] [PLAYER STATE]"
+        )
