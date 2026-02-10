@@ -1,2 +1,31 @@
 # Frotz
 Classic Interactive Fiction simulator
+
+## Project structure notes
+- `main.py`: Flask web server and gameplay API routes (`/`, `/get_state`, `/reset`, `/command`).
+- `templates/index.html`: Main game UI template rendered by Flask.
+- `static/style.css`: CRT-style terminal and HUD visual styling.
+- `static/script.js`: Front-end logic for input handling, rendering responses, and HUD updates.
+- `world_manager.py`: World state, room/item persistence, deterministic movement logic, and save/load helpers.
+- `llm_interface.py`: LLM prompts and response handling for world genesis, room generation, and narrative turn processing.
+- `lore.txt`: Setting/world-building seed text used for content generation.
+- `savegame.json` / `debug_log.txt`: Runtime-generated files used during play (ignored in Git to avoid merge conflicts).
+- `pyproject.toml` / `poetry.lock`: Python dependency and environment management.
+
+## Feature notes
+- Deterministic commands for inventory (`i/inv/inventory`), look (`l/look`), and examine (`x` / `examine`).
+- Hybrid gameplay loop: deterministic movement/state transitions plus LLM-authored narrative interactions.
+- Dynamic room generation when traveling to unexplored exits.
+- Persistent mutable world (item movement/description updates + narrative thread memory).
+- Composed room descriptions that automatically append currently visible objects/characters.
+- Stateful player self-description (`x me` / `examine myself`) including worn and carried items.
+- Hidden item visibility flags so discovered objects can appear only after reveal actions.
+- Responsive terminal-like web UI with side HUD for location, exits, and inventory.
+
+
+## Merge-safe workflow (no manual conflict resolution)
+1. Keep **one active Codex PR at a time**. Do not open a second Codex PR until the first is merged.
+2. Before each new Codex change request, ask Codex to sync with latest `main` first.
+3. If GitHub says a PR has conflicts, do **not** click “accept current/incoming/both”.
+4. Instead, comment: “Please update this PR to be mergeable with latest main; do not require manual conflict resolution.”
+5. Merge only when GitHub shows the PR is mergeable.
