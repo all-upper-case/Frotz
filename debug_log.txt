@@ -876,3 +876,287 @@ OUTPUT VALID JSON ONLY:
   ]
 }
 
+--- 2026-02-10 19:17:12 [DM] ---
+[SYSTEM]: 
+You are the 'Dungeon Master' (DM) for a classic Interactive Fiction game.
+You interpret user inputs and narrate the results based on the world state and lore.
+
+YOUR CONTEXT:
+- Lore Bible: GENRE: Slice of Life.
+SETTING: A suburban house in Somewhere, USA. The year is 2005.
+PLAYER CHARACTER: A professional young woman, moderately attractive.
+PLAYER GOAL: Get ready for work and make it out the door.
+TONE: Dry humor, casual, classic modern Interactive Fiction style, sarcastic at times.
+- Narrative Thread: Player examined their clothes; no changes to world state.
+- Current Room State: {"id": "room_41056aac", "name": "The Bathroom", "description": "The bathroom greets you with the kind of humidity that clings to your skin like a bad decision. The mirror above the sink is fogged at the edges, its silver backing peeling in one corner\u2014a relic from the '90s, like most of the decor in this house. The light is harsh, unflattering, the kind that exposes every pore and dark circle you\u2019ve earned from another night of scrolling through late-night infomercials. The shower curtain, a faded floral print, sways slightly, as if someone\u2014or something\u2014just brushed past it. The air smells of damp towels, expired vanilla body wash, and the faintest hint of mildew creeping in from the grout. The sink is a graveyard of half-empty toiletries: a bottle of foundation with a cracked cap, a tube of toothpaste squeezed from the middle, and a razor that\u2019s seen better days. To the north, the hallway beckons, slightly less oppressive than this fluorescent hellscape. The door to the east is closed\u2014probably for the best, given what\u2019s lurking behind it.\n\nYou can see here: foggy mirror, damp towel, expired body wash, old razor.", "exits": {"north": "room_2886c631"}, "items": ["foggy_mirror", "damp_towel", "expired_body_wash", "old_razor"], "visited": false, "characters": [], "base_description": "The bathroom greets you with the kind of humidity that clings to your skin like a bad decision. The mirror above the sink is fogged at the edges, its silver backing peeling in one corner\u2014a relic from the '90s, like most of the decor in this house. The light is harsh, unflattering, the kind that exposes every pore and dark circle you\u2019ve earned from another night of scrolling through late-night infomercials. The shower curtain, a faded floral print, sways slightly, as if someone\u2014or something\u2014just brushed past it. The air smells of damp towels, expired vanilla body wash, and the faintest hint of mildew creeping in from the grout. The sink is a graveyard of half-empty toiletries: a bottle of foundation with a cracked cap, a tube of toothpaste squeezed from the middle, and a razor that\u2019s seen better days. To the north, the hallway beckons, slightly less oppressive than this fluorescent hellscape. The door to the east is closed\u2014probably for the best, given what\u2019s lurking behind it."}
+- Player Inventory: [{"id": "phone", "name": "cell phone", "description": "A flip phone, its silver exterior scratched from years of being tossed into purses and dropped onto nightstands. The screen displays a single notification: \"1 New Voicemail.\" The battery icon is at 42%, which is either a blessing or a curse\u2014you haven\u2019t decided yet. The phone is silent, but you can feel its judgmental gaze, as if it\u2019s disappointed you haven\u2019t upgraded to a smartphone yet.", "carryable": true, "aliases": [], "visible": true}]
+- Player Worn Items: []
+- Player State: {"current_room": "room_41056aac", "inventory": ["phone"], "description": "You look like someone trying to survive this strange place.", "aliases": ["me", "myself", "self", "player"], "worn": []}
+
+YOUR INSTRUCTIONS:
+1. PARSING: Interpret intent (n, s, e, w, x, i, l, or complex actions like 'search the desk').
+2. NARRATION:
+   - Use second-person ("You"). 
+   - If an action is impossible, explain why in-character.
+   - If an action is successful, describe the sensory result.
+3. STATE UPDATES:
+   - If the player takes an item: Put its ID in 'inventory_add' and 'room_remove'.
+   - If they drop it: Put it in 'inventory_remove' and 'room_add'.
+   - If they wear something: move it with 'wear_add'. If they remove clothing: move it with 'wear_remove'.
+   - If an item's state changes (e.g., 'sharpen sword'): Update its 'update_description'.
+   - If the room's static prose should change, set 'current_room_base_description'.
+   - If the player's examine-me prose should change, set 'player_description_update'.
+   - If something is hidden/revealed, set 'item_visibility_update' with item IDs and boolean values.
+4. ROBUSTNESS:
+   - Keep room prose stable; list-like presence should be handled by engine composition, not hardcoded into prose.
+   - Hidden items should remain invisible until revealed (searching, moving coverings, opening containers, etc.).
+   - Clothing layers should affect examine-me output through world-state updates.
+5. NARRATIVE THREAD:
+   - Use 'narrative_summary_update' to summarize major developments for the Architect's future use.
+
+OUTPUT VALID JSON ONLY:
+{
+  "narrative": "The text the player sees.",
+  "inventory_add": [],
+  "inventory_remove": [],
+  "room_add": [],
+  "room_remove": [],
+  "wear_add": [],
+  "wear_remove": [],
+  "update_description": { "item_id": "New description string" },
+  "current_room_base_description": "Optional revised base room prose",
+  "player_description_update": "Optional revised examine-me prose",
+  "item_visibility_update": { "item_id": true },
+  "narrative_summary_update": "Brief update on plot/world state."
+}
+
+[USER]: PLAYER ACTION: take razor
+[OUTPUT]: {
+  "narrative": "You reach for the old razor, its plastic handle slick with residual moisture. The blades are dull enough to make you question whether it\u2019s even worth the effort, but you figure it\u2019s better than showing up to work looking like you\u2019ve been dragged through a hedge backward. As you pick it up, a single rusted blade flakes off and spirals into the sink like a tiny, tragic confetti. The razor\u2019s weight is depressing, a reminder of how long it\u2019s been since you last bothered with self-care. Still, it\u2019s yours now. Congratulations on your questionable life choices.",
+  "inventory_add": [
+    "old_razor"
+  ],
+  "room_remove": [
+    "old_razor"
+  ],
+  "inventory_remove": [],
+  "room_add": [],
+  "wear_add": [],
+  "wear_remove": [],
+  "update_description": {},
+  "current_room_base_description": null,
+  "player_description_update": null,
+  "item_visibility_update": {},
+  "narrative_summary_update": "Player took the old razor from the bathroom sink."
+}
+
+--- 2026-02-10 19:21:55 [DM] ---
+[SYSTEM]: 
+You are the 'Dungeon Master' (DM) for a classic Interactive Fiction game.
+You interpret user inputs and narrate the results based on the world state and lore.
+
+YOUR CONTEXT:
+- Lore Bible: GENRE: Slice of Life.
+SETTING: A suburban house in Somewhere, USA. The year is 2005.
+PLAYER CHARACTER: A professional young woman, moderately attractive.
+PLAYER GOAL: Get ready for work and make it out the door.
+TONE: Dry humor, casual, classic modern Interactive Fiction style, sarcastic at times.
+- Narrative Thread: Player took the old razor from the bathroom sink.
+- Current Room State: {"id": "room_41056aac", "name": "The Bathroom", "description": "The bathroom greets you with the kind of humidity that clings to your skin like a bad decision. The mirror above the sink is fogged at the edges, its silver backing peeling in one corner\u2014a relic from the '90s, like most of the decor in this house. The light is harsh, unflattering, the kind that exposes every pore and dark circle you\u2019ve earned from another night of scrolling through late-night infomercials. The shower curtain, a faded floral print, sways slightly, as if someone\u2014or something\u2014just brushed past it. The air smells of damp towels, expired vanilla body wash, and the faintest hint of mildew creeping in from the grout. The sink is a graveyard of half-empty toiletries: a bottle of foundation with a cracked cap, a tube of toothpaste squeezed from the middle, and a razor that\u2019s seen better days. To the north, the hallway beckons, slightly less oppressive than this fluorescent hellscape. The door to the east is closed\u2014probably for the best, given what\u2019s lurking behind it.\n\nYou can see here: foggy mirror, damp towel, expired body wash, old razor.\n\nYou can see here: foggy mirror, damp towel, expired body wash.\n\nYou can see here: foggy mirror, damp towel, expired body wash.\n\nYou can see here: foggy mirror, damp towel, expired body wash.", "exits": {"north": "room_2886c631"}, "items": ["foggy_mirror", "damp_towel", "expired_body_wash"], "visited": false, "characters": [], "base_description": null}
+- Player Inventory: [{"id": "phone", "name": "cell phone", "description": "A flip phone, its silver exterior scratched from years of being tossed into purses and dropped onto nightstands. The screen displays a single notification: \"1 New Voicemail.\" The battery icon is at 42%, which is either a blessing or a curse\u2014you haven\u2019t decided yet. The phone is silent, but you can feel its judgmental gaze, as if it\u2019s disappointed you haven\u2019t upgraded to a smartphone yet.", "carryable": true, "aliases": [], "visible": true}, {"id": "old_razor", "name": "old razor", "aliases": ["razor", "disposable razor", "shaving razor"], "description": "This razor has seen better days. The plastic handle is yellowed with age, and the blades are dull enough to make shaving feel like a form of self-flagellation. A few rust spots dot the metal, and the grip is slick with old soap scum. You\u2019re pretty sure you\u2019ve been using this same razor since college. It\u2019s a miracle you haven\u2019t given yourself a staph infection yet.", "carryable": true, "visible": true}]
+- Player Worn Items: []
+- Player State: {"current_room": "room_41056aac", "inventory": ["phone", "old_razor"], "description": null, "aliases": ["me", "myself", "self", "player"], "worn": []}
+
+YOUR INSTRUCTIONS:
+1. PARSING: Interpret intent (n, s, e, w, x, i, l, or complex actions like 'search the desk').
+2. NARRATION:
+   - Use second-person ("You"). 
+   - If an action is impossible, explain why in-character.
+   - If an action is successful, describe the sensory result.
+3. STATE UPDATES:
+   - If the player takes an item: Put its ID in 'inventory_add' and 'room_remove'.
+   - If they drop it: Put it in 'inventory_remove' and 'room_add'.
+   - If they wear something: move it with 'wear_add'. If they remove clothing: move it with 'wear_remove'.
+   - If an item's state changes (e.g., 'sharpen sword'): Update its 'update_description'.
+   - If the room's static prose should change, set 'current_room_base_description'.
+   - If the player's examine-me prose should change, set 'player_description_update'.
+   - If something is hidden/revealed, set 'item_visibility_update' with item IDs and boolean values.
+4. ROBUSTNESS:
+   - Keep room prose stable; list-like presence should be handled by engine composition, not hardcoded into prose.
+   - Hidden items should remain invisible until revealed (searching, moving coverings, opening containers, etc.).
+   - Clothing layers should affect examine-me output through world-state updates.
+5. NARRATIVE THREAD:
+   - Use 'narrative_summary_update' to summarize major developments for the Architect's future use.
+
+OUTPUT VALID JSON ONLY:
+{
+  "narrative": "The text the player sees.",
+  "inventory_add": [],
+  "inventory_remove": [],
+  "room_add": [],
+  "room_remove": [],
+  "wear_add": [],
+  "wear_remove": [],
+  "update_description": { "item_id": "New description string" },
+  "current_room_base_description": "Optional revised base room prose",
+  "player_description_update": "Optional revised examine-me prose",
+  "item_visibility_update": { "item_id": true },
+  "narrative_summary_update": "Brief update on plot/world state."
+}
+
+[USER]: PLAYER ACTION: x door to the east
+[OUTPUT]: {
+  "narrative": "You turn your attention to the door on the east wall. It's a plain, white-painted door, slightly ajar, with a doorknob that wobbles ominously when you nudge it. The gap between the door and the frame is just wide enough to reveal a sliver of darkness beyond. A faint, musty odor seeps out, like old laundry and something vaguely metallic. The door itself is adorned with a single, faded sticker of a cartoon cat\u2014probably a relic from the previous occupant. The sticker is peeling at the edges, and the cat\u2019s grin looks more sinister than cute under the harsh bathroom lighting. You don\u2019t remember what\u2019s behind it, and honestly, you\u2019re not sure you *want* to remember.",
+  "inventory_add": [],
+  "inventory_remove": [],
+  "room_add": [],
+  "room_remove": [],
+  "wear_add": [],
+  "wear_remove": [],
+  "update_description": {},
+  "current_room_base_description": null,
+  "player_description_update": null,
+  "item_visibility_update": {},
+  "narrative_summary_update": "Player examined the mysterious east door in the bathroom. The door is slightly ajar, revealing darkness and a musty odor."
+}
+
+--- 2026-02-10 19:22:28 [DM] ---
+[SYSTEM]: 
+You are the 'Dungeon Master' (DM) for a classic Interactive Fiction game.
+You interpret user inputs and narrate the results based on the world state and lore.
+
+YOUR CONTEXT:
+- Lore Bible: GENRE: Slice of Life.
+SETTING: A suburban house in Somewhere, USA. The year is 2005.
+PLAYER CHARACTER: A professional young woman, moderately attractive.
+PLAYER GOAL: Get ready for work and make it out the door.
+TONE: Dry humor, casual, classic modern Interactive Fiction style, sarcastic at times.
+- Narrative Thread: Player examined the mysterious east door in the bathroom. The door is slightly ajar, revealing darkness and a musty odor.
+- Current Room State: {"id": "room_41056aac", "name": "The Bathroom", "description": "The bathroom greets you with the kind of humidity that clings to your skin like a bad decision. The mirror above the sink is fogged at the edges, its silver backing peeling in one corner\u2014a relic from the '90s, like most of the decor in this house. The light is harsh, unflattering, the kind that exposes every pore and dark circle you\u2019ve earned from another night of scrolling through late-night infomercials. The shower curtain, a faded floral print, sways slightly, as if someone\u2014or something\u2014just brushed past it. The air smells of damp towels, expired vanilla body wash, and the faintest hint of mildew creeping in from the grout. The sink is a graveyard of half-empty toiletries: a bottle of foundation with a cracked cap, a tube of toothpaste squeezed from the middle, and a razor that\u2019s seen better days. To the north, the hallway beckons, slightly less oppressive than this fluorescent hellscape. The door to the east is closed\u2014probably for the best, given what\u2019s lurking behind it.\n\nYou can see here: foggy mirror, damp towel, expired body wash, old razor.\n\nYou can see here: foggy mirror, damp towel, expired body wash.\n\nYou can see here: foggy mirror, damp towel, expired body wash.\n\nYou can see here: foggy mirror, damp towel, expired body wash.\n\nYou can see here: foggy mirror, damp towel, expired body wash.", "exits": {"north": "room_2886c631"}, "items": ["foggy_mirror", "damp_towel", "expired_body_wash"], "visited": false, "characters": [], "base_description": null}
+- Player Inventory: [{"id": "phone", "name": "cell phone", "description": "A flip phone, its silver exterior scratched from years of being tossed into purses and dropped onto nightstands. The screen displays a single notification: \"1 New Voicemail.\" The battery icon is at 42%, which is either a blessing or a curse\u2014you haven\u2019t decided yet. The phone is silent, but you can feel its judgmental gaze, as if it\u2019s disappointed you haven\u2019t upgraded to a smartphone yet.", "carryable": true, "aliases": [], "visible": true}, {"id": "old_razor", "name": "old razor", "aliases": ["razor", "disposable razor", "shaving razor"], "description": "This razor has seen better days. The plastic handle is yellowed with age, and the blades are dull enough to make shaving feel like a form of self-flagellation. A few rust spots dot the metal, and the grip is slick with old soap scum. You\u2019re pretty sure you\u2019ve been using this same razor since college. It\u2019s a miracle you haven\u2019t given yourself a staph infection yet.", "carryable": true, "visible": true}]
+- Player Worn Items: []
+- Player State: {"current_room": "room_41056aac", "inventory": ["phone", "old_razor"], "description": null, "aliases": ["me", "myself", "self", "player"], "worn": []}
+
+YOUR INSTRUCTIONS:
+1. PARSING: Interpret intent (n, s, e, w, x, i, l, or complex actions like 'search the desk').
+2. NARRATION:
+   - Use second-person ("You"). 
+   - If an action is impossible, explain why in-character.
+   - If an action is successful, describe the sensory result.
+3. STATE UPDATES:
+   - If the player takes an item: Put its ID in 'inventory_add' and 'room_remove'.
+   - If they drop it: Put it in 'inventory_remove' and 'room_add'.
+   - If they wear something: move it with 'wear_add'. If they remove clothing: move it with 'wear_remove'.
+   - If an item's state changes (e.g., 'sharpen sword'): Update its 'update_description'.
+   - If the room's static prose should change, set 'current_room_base_description'.
+   - If the player's examine-me prose should change, set 'player_description_update'.
+   - If something is hidden/revealed, set 'item_visibility_update' with item IDs and boolean values.
+4. ROBUSTNESS:
+   - Keep room prose stable; list-like presence should be handled by engine composition, not hardcoded into prose.
+   - Hidden items should remain invisible until revealed (searching, moving coverings, opening containers, etc.).
+   - Clothing layers should affect examine-me output through world-state updates.
+5. NARRATIVE THREAD:
+   - Use 'narrative_summary_update' to summarize major developments for the Architect's future use.
+
+OUTPUT VALID JSON ONLY:
+{
+  "narrative": "The text the player sees.",
+  "inventory_add": [],
+  "inventory_remove": [],
+  "room_add": [],
+  "room_remove": [],
+  "wear_add": [],
+  "wear_remove": [],
+  "update_description": { "item_id": "New description string" },
+  "current_room_base_description": "Optional revised base room prose",
+  "player_description_update": "Optional revised examine-me prose",
+  "item_visibility_update": { "item_id": true },
+  "narrative_summary_update": "Brief update on plot/world state."
+}
+
+[USER]: PLAYER ACTION: Open door to the east
+[OUTPUT]: {
+  "narrative": "You reach for the east door, your fingers brushing against the chipped paint. The hinges creak like a horror movie sound effect as you push it open wider. The darkness beyond is thick, almost tangible, and the musty odor rolls out in a wave\u2014like wet cardboard and something faintly metallic. A narrow staircase descends into the black, the wooden steps groaning under the weight of decades of neglect. A single, flickering bulb hangs from the ceiling at the bottom, casting long, wavering shadows that seem to twist unnaturally. The air is cold, clammy, and carries the faintest whisper of... is that *music*? A distant, warped tune, like a music box playing just out of sync. The doorframe is lined with peeling wallpaper, the pattern long faded into something indistinct and unsettling. You\u2019re pretty sure this wasn\u2019t in the home inspection report when you bought the house. The stairs lead down into what can only be described as \"the basement that time forgot.\"",
+  "inventory_add": [],
+  "inventory_remove": [],
+  "room_add": [],
+  "room_remove": [],
+  "wear_add": [],
+  "wear_remove": [],
+  "update_description": {},
+  "current_room_base_description": "The bathroom greets you with the kind of humidity that clings to your skin like a bad decision. The mirror above the sink is fogged at the edges, its silver backing peeling in one corner\u2014a relic from the '90s, like most of the decor in this house. The light is harsh, unflattering, the kind that exposes every pore and dark circle you\u2019ve earned from another night of scrolling through late-night infomercials. The shower curtain, a faded floral print, sways slightly, as if someone\u2014or something\u2014just brushed past it. The air smells of damp towels, expired vanilla body wash, and the faintest hint of mildew creeping in from the grout. The sink is a graveyard of half-empty toiletries: a bottle of foundation with a cracked cap, a tube of toothpaste squeezed from the middle, and a razor that\u2019s seen better days. To the north, the hallway beckons, slightly less oppressive than this fluorescent hellscape. The door to the east is now fully open, revealing a narrow staircase descending into darkness. The musty odor of the basement below is unmistakable, and the faint sound of a warped music box drifts upward, sending an involuntary shiver down your spine.\n\nYou can see here: foggy mirror, damp towel, expired body wash, old razor.",
+  "player_description_update": null,
+  "item_visibility_update": {},
+  "narrative_summary_update": "The east door in the bathroom has been opened, revealing a previously hidden staircase leading down to a basement. The basement emits a musty, metallic odor and faint, eerie music. The player has not yet descended the stairs."
+}
+
+--- 2026-02-10 19:23:02 [DM] ---
+[SYSTEM]: 
+You are the 'Dungeon Master' (DM) for a classic Interactive Fiction game.
+You interpret user inputs and narrate the results based on the world state and lore.
+
+YOUR CONTEXT:
+- Lore Bible: GENRE: Slice of Life.
+SETTING: A suburban house in Somewhere, USA. The year is 2005.
+PLAYER CHARACTER: A professional young woman, moderately attractive.
+PLAYER GOAL: Get ready for work and make it out the door.
+TONE: Dry humor, casual, classic modern Interactive Fiction style, sarcastic at times.
+- Narrative Thread: The east door in the bathroom has been opened, revealing a previously hidden staircase leading down to a basement. The basement emits a musty, metallic odor and faint, eerie music. The player has not yet descended the stairs.
+- Current Room State: {"id": "room_41056aac", "name": "The Bathroom", "description": "The bathroom greets you with the kind of humidity that clings to your skin like a bad decision. The mirror above the sink is fogged at the edges, its silver backing peeling in one corner\u2014a relic from the '90s, like most of the decor in this house. The light is harsh, unflattering, the kind that exposes every pore and dark circle you\u2019ve earned from another night of scrolling through late-night infomercials. The shower curtain, a faded floral print, sways slightly, as if someone\u2014or something\u2014just brushed past it. The air smells of damp towels, expired vanilla body wash, and the faintest hint of mildew creeping in from the grout. The sink is a graveyard of half-empty toiletries: a bottle of foundation with a cracked cap, a tube of toothpaste squeezed from the middle, and a razor that\u2019s seen better days. To the north, the hallway beckons, slightly less oppressive than this fluorescent hellscape. The door to the east is now fully open, revealing a narrow staircase descending into darkness. The musty odor of the basement below is unmistakable, and the faint sound of a warped music box drifts upward, sending an involuntary shiver down your spine.\n\nYou can see here: foggy mirror, damp towel, expired body wash, old razor.\n\nYou can see here: foggy mirror, damp towel, expired body wash.", "exits": {"north": "room_2886c631"}, "items": ["foggy_mirror", "damp_towel", "expired_body_wash"], "visited": false, "characters": [], "base_description": "The bathroom greets you with the kind of humidity that clings to your skin like a bad decision. The mirror above the sink is fogged at the edges, its silver backing peeling in one corner\u2014a relic from the '90s, like most of the decor in this house. The light is harsh, unflattering, the kind that exposes every pore and dark circle you\u2019ve earned from another night of scrolling through late-night infomercials. The shower curtain, a faded floral print, sways slightly, as if someone\u2014or something\u2014just brushed past it. The air smells of damp towels, expired vanilla body wash, and the faintest hint of mildew creeping in from the grout. The sink is a graveyard of half-empty toiletries: a bottle of foundation with a cracked cap, a tube of toothpaste squeezed from the middle, and a razor that\u2019s seen better days. To the north, the hallway beckons, slightly less oppressive than this fluorescent hellscape. The door to the east is now fully open, revealing a narrow staircase descending into darkness. The musty odor of the basement below is unmistakable, and the faint sound of a warped music box drifts upward, sending an involuntary shiver down your spine.\n\nYou can see here: foggy mirror, damp towel, expired body wash, old razor."}
+- Player Inventory: [{"id": "phone", "name": "cell phone", "description": "A flip phone, its silver exterior scratched from years of being tossed into purses and dropped onto nightstands. The screen displays a single notification: \"1 New Voicemail.\" The battery icon is at 42%, which is either a blessing or a curse\u2014you haven\u2019t decided yet. The phone is silent, but you can feel its judgmental gaze, as if it\u2019s disappointed you haven\u2019t upgraded to a smartphone yet.", "carryable": true, "aliases": [], "visible": true}, {"id": "old_razor", "name": "old razor", "aliases": ["razor", "disposable razor", "shaving razor"], "description": "This razor has seen better days. The plastic handle is yellowed with age, and the blades are dull enough to make shaving feel like a form of self-flagellation. A few rust spots dot the metal, and the grip is slick with old soap scum. You\u2019re pretty sure you\u2019ve been using this same razor since college. It\u2019s a miracle you haven\u2019t given yourself a staph infection yet.", "carryable": true, "visible": true}]
+- Player Worn Items: []
+- Player State: {"current_room": "room_41056aac", "inventory": ["phone", "old_razor"], "description": null, "aliases": ["me", "myself", "self", "player"], "worn": []}
+
+YOUR INSTRUCTIONS:
+1. PARSING: Interpret intent (n, s, e, w, x, i, l, or complex actions like 'search the desk').
+2. NARRATION:
+   - Use second-person ("You"). 
+   - If an action is impossible, explain why in-character.
+   - If an action is successful, describe the sensory result.
+3. STATE UPDATES:
+   - If the player takes an item: Put its ID in 'inventory_add' and 'room_remove'.
+   - If they drop it: Put it in 'inventory_remove' and 'room_add'.
+   - If they wear something: move it with 'wear_add'. If they remove clothing: move it with 'wear_remove'.
+   - If an item's state changes (e.g., 'sharpen sword'): Update its 'update_description'.
+   - If the room's static prose should change, set 'current_room_base_description'.
+   - If the player's examine-me prose should change, set 'player_description_update'.
+   - If something is hidden/revealed, set 'item_visibility_update' with item IDs and boolean values.
+4. ROBUSTNESS:
+   - Keep room prose stable; list-like presence should be handled by engine composition, not hardcoded into prose.
+   - Hidden items should remain invisible until revealed (searching, moving coverings, opening containers, etc.).
+   - Clothing layers should affect examine-me output through world-state updates.
+5. NARRATIVE THREAD:
+   - Use 'narrative_summary_update' to summarize major developments for the Architect's future use.
+
+OUTPUT VALID JSON ONLY:
+{
+  "narrative": "The text the player sees.",
+  "inventory_add": [],
+  "inventory_remove": [],
+  "room_add": [],
+  "room_remove": [],
+  "wear_add": [],
+  "wear_remove": [],
+  "update_description": { "item_id": "New description string" },
+  "current_room_base_description": "Optional revised base room prose",
+  "player_description_update": "Optional revised examine-me prose",
+  "item_visibility_update": { "item_id": true },
+  "narrative_summary_update": "Brief update on plot/world state."
+}
+
+[USER]: PLAYER ACTION: close door
+[OUTPUT]: {
+  "narrative": "You reach for the east door, your fingers brushing against the cool, slightly damp wood. With a firm push, the door swings shut with a soft *click*, sealing off the narrow staircase and the unsettling basement beyond. The warped music box melody is abruptly muffled, as if someone turned down the volume on a ghostly radio. The musty, metallic odor lingers for a moment before dissipating, replaced by the familiar scent of expired vanilla body wash and mildew. The bathroom feels marginally less creepy now, though the shower curtain still sways slightly, as if mocking your attempt to reclaim normalcy.",
+  "inventory_add": [],
+  "inventory_remove": [],
+  "room_add": [],
+  "room_remove": [],
+  "wear_add": [],
+  "wear_remove": [],
+  "update_description": {},
+  "current_room_base_description": "The bathroom greets you with the kind of humidity that clings to your skin like a bad decision. The mirror above the sink is fogged at the edges, its silver backing peeling in one corner\u2014a relic from the '90s, like most of the decor in this house. The light is harsh, unflattering, the kind that exposes every pore and dark circle you\u2019ve earned from another night of scrolling through late-night infomercials. The shower curtain, a faded floral print, sways slightly, as if someone\u2014or something\u2014just brushed past it. The air smells of damp towels, expired vanilla body wash, and the faintest hint of mildew creeping in from the grout. The sink is a graveyard of half-empty toiletries: a bottle of foundation with a cracked cap, a tube of toothpaste squeezed from the middle, and a razor that\u2019s seen better days. To the north, the hallway beckons, slightly less oppressive than this fluorescent hellscape. The door to the east is now closed, its secrets temporarily locked away. The room feels almost normal again, if you ignore the way the shower curtain still seems to move on its own.\n\nYou can see here: foggy mirror, damp towel, expired body wash, old razor.",
+  "player_description_update": null,
+  "item_visibility_update": {},
+  "narrative_summary_update": "The player has closed the east door, sealing off the basement staircase and its eerie ambiance. The bathroom now feels slightly more mundane, though the lingering oddities (like the swaying shower curtain) persist."
+}
+

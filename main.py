@@ -29,7 +29,7 @@ def reset_game():
         intro = world.initialize_world(genesis_data)
         room = world.get_current_room()
         full_text = f"{intro}\n\n### {room['name']}\n{world.describe_room(room)}"
-        return jsonify({"response": full_text, "state": get_ui_state(), "usage": genesis_data.get("_usage")})
+        return jsonify({"response": full_text, "state": get_ui_state()})
     except Exception as e:
         return jsonify({"response": f"Genesis Failed: {str(e)}", "state": None})
 
@@ -84,7 +84,7 @@ def handle_command():
         new_data = ai.generate_room(prev, user_input, thread)
         world.create_room_from_stub(target, new_data)
         room = world.get_room(target)
-        return jsonify({"response": f"### {room['name']}\n{world.describe_room(room)}", "state": get_ui_state(), "usage": new_data.get("_usage")})
+        return jsonify({"response": f"### {room['name']}\n{world.describe_room(room)}", "state": get_ui_state()})
 
     if status == "error":
         if "Invalid direction" in target:
@@ -103,7 +103,7 @@ def process_ai_turn(inp):
     outcome = ai.process_turn(inp, room, inv, worn, world.data.get('player', {}), thread)
     world.apply_outcome(outcome)
 
-    return jsonify({"response": outcome.get("narrative", "..."), "state": get_ui_state(), "usage": outcome.get("_usage")})
+    return jsonify({"response": outcome.get("narrative", "..."), "state": get_ui_state()})
 
 
 def get_ui_state():
@@ -119,5 +119,5 @@ def get_ui_state():
     }
 
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)

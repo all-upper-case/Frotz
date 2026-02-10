@@ -208,21 +208,8 @@ class LLMInterface:
         lore = self.get_lore()
         p_name = prev_room['name'] if prev_room else "The Void"
         p_desc = prev_room['description'] if prev_room else "Nothingness."
-        sys = PROMPT_ARCHITECT.format(
-            lore_bible=lore,
-            narrative_thread=thread,
-            prev_name=p_name,
-            prev_desc=p_desc,
-            direction=direction
-        )
-        user = "The player has moved. Describe the new area."
-        return self._req(
-            sys,
-            user,
-            "ARCHITECT",
-            "[ARCHITECT SYSTEM PROMPT]",
-            "The player has moved. Describe the new area. [LORE BIBLE CONTENTS] [NARRATIVE THREAD] [PREVIOUS LOCATION]"
-        )
+        sys = PROMPT_ARCHITECT.format(lore_bible=lore, narrative_thread=thread, prev_name=p_name, prev_desc=p_desc, direction=direction)
+        return self._req(sys, "The player has moved. Describe the new area.", "ARCHITECT")
 
     def process_turn(self, user_input, room_data, inventory, worn, player_state, thread):
         lore = self.get_lore()
@@ -242,3 +229,4 @@ class LLMInterface:
             "[DM SYSTEM PROMPT]",
             f"PLAYER ACTION: {user_input} [LORE BIBLE CONTENTS] [NARRATIVE THREAD] [CURRENT ROOM STATE] [INVENTORY] [WORN ITEMS] [PLAYER STATE]"
         )
+        return self._req(sys, f"PLAYER ACTION: {user_input}", "DM")

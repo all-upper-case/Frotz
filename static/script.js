@@ -87,11 +87,3 @@ function updateHUD(state) {
     });
 }
 if (typeof marked === 'undefined') window.marked = { parse: (t) => t };
-
-function appendUsage(usage) {
-    if (!usage) return;
-    const input = usage.input_tokens ?? '?';
-    const output = usage.output_tokens ?? '?';
-    const total = usage.total_tokens ?? '?';
-    appendLog(`TOKENS — input: ${input}, output: ${output}, total: ${total}`, 'system');
-}
