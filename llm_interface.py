@@ -1,7 +1,8 @@
-import os
-import json
-import requests
 import datetime
+import json
+import os
+
+import requests
 
 MISTRAL_API_KEY = os.environ.get("MISTRAL_API_KEY")
 API_URL = "https://api.mistral.ai/v1/chat/completions"
@@ -136,23 +137,45 @@ OUTPUT VALID JSON ONLY:
 }}
 """
 
+
 class LLMInterface:
     def __init__(self):
         self.model = "mistral-large-latest"
 
     def get_lore(self):
         if os.path.exists(LORE_FILE):
-            with open(LORE_FILE, 'r', encoding='utf-8') as f: return f.read()
+            with open(LORE_FILE, 'r', encoding='utf-8') as f:
+                return f.read()
         return "A mysterious text adventure."
 
-    def _req(self, system, user, role):
+    def _extract_usage(self, response_json):
+        usage = response_json.get('usage', {}) if isinstance(response_json, dict) else {}
+        return {
+            "input_tokens": usage.get('prompt_tokens'),
+            "output_tokens": usage.get('completion_tokens'),
+            "total_tokens": usage.get('total_tokens'),
+            "raw_usage": usage
+        }
+
+    def _write_debug_log(self, role, system_tag, user_tag, output_data, usage_info):
+        with open(DEBUG_LOG_FILE, "a", encoding='utf-8') as f:
+            ts = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            f.write(
+                f"--- {ts} [{role}] ---\n"
+                f"[SYSTEM]: {system_tag}\n"
+                f"[USER]: {user_tag}\n"
+                f"[USAGE]: input={usage_info.get('input_tokens')} output={usage_info.get('output_tokens')} total={usage_info.get('total_tokens')} raw={json.dumps(usage_info.get('raw_usage', {}))}\n"
+                f"[OUTPUT]: {json.dumps(output_data, indent=2)}\n\n"
+            )
+
+    def _req(self, system, user, role, system_tag, user_tag):
         if not MISTRAL_API_KEY:
             return {"error": "API Key Missing", "narrative": "Set your MISTRAL_API_KEY in Replit Secrets."}
 
         headers = {"Authorization": f"Bearer {MISTRAL_API_KEY}", "Content-Type": "application/json"}
         payload = {
             "model": self.model,
-            "messages": [{"role":"system", "content":system}, {"role":"user", "content":user}],
+            "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}],
             "response_format": {"type": "json_object"},
             "temperature": 0.7
         }
@@ -160,20 +183,26 @@ class LLMInterface:
         try:
             resp = requests.post(API_URL, headers=headers, json=payload)
             resp.raise_for_status()
-            data = json.loads(resp.json()['choices'][0]['message']['content'])
-
-            # Log the full exchange
-            with open(DEBUG_LOG_FILE, "a", encoding='utf-8') as f:
-                ts = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                f.write(f"--- {ts} [{role}] ---\n[SYSTEM]: {system}\n[USER]: {user}\n[OUTPUT]: {json.dumps(data, indent=2)}\n\n")
-
+            response_json = resp.json()
+            data = json.loads(response_json['choices'][0]['message']['content'])
+            usage_info = self._extract_usage(response_json)
+            data["_usage"] = usage_info
+            self._write_debug_log(role, system_tag, user_tag, data, usage_info)
             return data
         except Exception as e:
             return {"narrative": f"The logic of the world ripples... (Error: {e})", "error": True}
 
     def generate_genesis(self):
         lore = self.get_lore()
-        return self._req(PROMPT_GENESIS.format(lore_bible=lore), "Initiate World Genesis.", "GENESIS")
+        sys = PROMPT_GENESIS.format(lore_bible=lore)
+        user = "Initiate World Genesis."
+        return self._req(
+            sys,
+            user,
+            "GENESIS",
+            "[GENESIS SYSTEM PROMPT]",
+            "Initiate World Genesis. [LORE BIBLE CONTENTS]"
+        )
 
     def generate_room(self, prev_room, direction, thread):
         lore = self.get_lore()
@@ -191,5 +220,13 @@ class LLMInterface:
             inventory=json.dumps(inventory),
             worn=json.dumps(worn),
             player_state=json.dumps(player_state)
+        )
+        user = f"PLAYER ACTION: {user_input}"
+        return self._req(
+            sys,
+            user,
+            "DM",
+            "[DM SYSTEM PROMPT]",
+            f"PLAYER ACTION: {user_input} [LORE BIBLE CONTENTS] [NARRATIVE THREAD] [CURRENT ROOM STATE] [INVENTORY] [WORN ITEMS] [PLAYER STATE]"
         )
         return self._req(sys, f"PLAYER ACTION: {user_input}", "DM")

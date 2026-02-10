@@ -28,6 +28,7 @@ async function triggerReset() {
 
     log.innerHTML = ''; // Clear loading text
     appendLog(data.response, 'system'); // Show Intro + Room 1
+    appendUsage(data.usage);
     if (data.state) updateHUD(data.state);
 }
 
@@ -59,6 +60,7 @@ async function sendCommand() {
         });
         const data = await res.json();
         appendLog(data.response, 'ai');
+        appendUsage(data.usage);
         if (data.state) updateHUD(data.state);
     } catch (e) {
         appendLog("Error contacting server.", 'error');
