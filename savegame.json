@@ -1,5 +1,5 @@
 {
-  "narrative_thread": "Player took the old razor from the bathroom sink.",
+  "narrative_thread": "The player has closed the east door, sealing off the basement staircase and its eerie ambiance. The bathroom now feels slightly more mundane, though the lingering oddities (like the swaying shower curtain) persist.",
   "player": {
     "current_room": "room_41056aac",
     "inventory": [
@@ -56,7 +56,7 @@
     "room_41056aac": {
       "id": "room_41056aac",
       "name": "The Bathroom",
-      "description": "The bathroom greets you with the kind of humidity that clings to your skin like a bad decision. The mirror above the sink is fogged at the edges, its silver backing peeling in one corner\u2014a relic from the '90s, like most of the decor in this house. The light is harsh, unflattering, the kind that exposes every pore and dark circle you\u2019ve earned from another night of scrolling through late-night infomercials. The shower curtain, a faded floral print, sways slightly, as if someone\u2014or something\u2014just brushed past it. The air smells of damp towels, expired vanilla body wash, and the faintest hint of mildew creeping in from the grout. The sink is a graveyard of half-empty toiletries: a bottle of foundation with a cracked cap, a tube of toothpaste squeezed from the middle, and a razor that\u2019s seen better days. To the north, the hallway beckons, slightly less oppressive than this fluorescent hellscape. The door to the east is closed\u2014probably for the best, given what\u2019s lurking behind it.\n\nYou can see here: foggy mirror, damp towel, expired body wash, old razor.\n\nYou can see here: foggy mirror, damp towel, expired body wash.",
+      "description": "The bathroom greets you with the kind of humidity that clings to your skin like a bad decision. The mirror above the sink is fogged at the edges, its silver backing peeling in one corner\u2014a relic from the '90s, like most of the decor in this house. The light is harsh, unflattering, the kind that exposes every pore and dark circle you\u2019ve earned from another night of scrolling through late-night infomercials. The shower curtain, a faded floral print, sways slightly, as if someone\u2014or something\u2014just brushed past it. The air smells of damp towels, expired vanilla body wash, and the faintest hint of mildew creeping in from the grout. The sink is a graveyard of half-empty toiletries: a bottle of foundation with a cracked cap, a tube of toothpaste squeezed from the middle, and a razor that\u2019s seen better days. To the north, the hallway beckons, slightly less oppressive than this fluorescent hellscape. The door to the east is now closed, its secrets temporarily locked away. The room feels almost normal again, if you ignore the way the shower curtain still seems to move on its own.\n\nYou can see here: foggy mirror, damp towel, expired body wash, old razor.\n\nYou can see here: foggy mirror, damp towel, expired body wash.",
       "exits": {
         "north": "room_2886c631"
       },
@@ -67,7 +67,7 @@
       ],
       "visited": false,
       "characters": [],
-      "base_description": null
+      "base_description": "The bathroom greets you with the kind of humidity that clings to your skin like a bad decision. The mirror above the sink is fogged at the edges, its silver backing peeling in one corner\u2014a relic from the '90s, like most of the decor in this house. The light is harsh, unflattering, the kind that exposes every pore and dark circle you\u2019ve earned from another night of scrolling through late-night infomercials. The shower curtain, a faded floral print, sways slightly, as if someone\u2014or something\u2014just brushed past it. The air smells of damp towels, expired vanilla body wash, and the faintest hint of mildew creeping in from the grout. The sink is a graveyard of half-empty toiletries: a bottle of foundation with a cracked cap, a tube of toothpaste squeezed from the middle, and a razor that\u2019s seen better days. To the north, the hallway beckons, slightly less oppressive than this fluorescent hellscape. The door to the east is now closed, its secrets temporarily locked away. The room feels almost normal again, if you ignore the way the shower curtain still seems to move on its own.\n\nYou can see here: foggy mirror, damp towel, expired body wash, old razor."
     }
   },
   "items": {
