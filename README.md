@@ -18,4 +18,7 @@ Classic Interactive Fiction simulator
 - Hybrid gameplay loop: deterministic movement/state transitions plus LLM-authored narrative interactions.
 - Dynamic room generation when traveling to unexplored exits.
 - Persistent mutable world (item movement/description updates + narrative thread memory).
+- Composed room descriptions that automatically append currently visible objects/characters.
+- Stateful player self-description (`x me` / `examine myself`) including worn and carried items.
+- Hidden item visibility flags so discovered objects can appear only after reveal actions.
 - Responsive terminal-like web UI with side HUD for location, exits, and inventory.
